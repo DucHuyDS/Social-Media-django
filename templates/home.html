@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'includes/header.html' %}
+
+<main>
+
+  <!-- Container START -->
+  <div class="container">
+
+    <div class="row g-4">
+
+
+      <!-- Sidenav START -->
+      <div class="col-lg-3">
+
+
+        <!-- Navbar START-->
+
+        {% include 'includes/navbar.html' %}
+
+        <!-- Navbar END-->
+      </div>
+      <!-- Sidenav END -->
+
+      <!-- Main content START -->
+      <div class="col-md-8 col-lg-6 vstack gap-2">
+
+        {% include 'includes/alerts.html' %}
+        {% include 'includes/share_feed.html' %}
+        {% if who_to_follow %}
+        <div class="card">
+          <!-- Card header START -->
+          <div class="card-header d-flex justify-content-between align-items-center border-0 pb-0">
+            <h6 class="card-title mb-0">People you may know</h6>
+          </div>
+          <!-- Card body START -->
+          <div class="card-body">
+            <div class="tiny-slider arrow-hover">
+              <div class="tns-outer" id="tns2-ow">
+
+                <div id="tns2-mw" class="tns-ovh">
+                  <div class="tns-inner" id="tns2-iw">
+                    <div class="tiny-slider-inner ms-n4  tns-slider tns-carousel tns-subpixel tns-calc tns-horizontal"
+                      data-arrow="true" data-dots="false" data-items-xl="3" data-items-lg="2" data-items-md="2"
+                      data-items-sm="2" data-items-xs="1" data-gutter="12" data-edge="30" id="tns2"
+                      style="transform: translate3d(-77.7778%, 0px, 0px);">
+                      {% for people in who_to_follow%}
+                      <div class="tns-item tns-slide-cloned" aria-hidden="true" tabindex="-1">
+                        <!-- Card add friend item START -->
+                        <div class="card shadow-none text-center">
+                          <!-- Card body -->
+                          <div class="card-body p-2 pb-0">
+                            <div class="avatar avatar-story avatar-xl">
+                              <a href="{{people.get_url}}"><img class="avatar-img rounded-circle"
+                                  src="{{people.user.profile.img.url}}" alt=""></a>
+                            </div>
+                            <h6 class="card-title mb-1 mt-3"> <a href="{{people.get_url}}">
+                                {{people.user.full_name}}</a></h6>
+
+                          </div>
+                          <!-- Card footer -->
+                          <div class="card-footer p-2 border-0">
+                            <a href="{% url 'send_friend_request' people.user.id %}"
+                              class="btn btn-sm btn-primary-soft w-100 friend_request" data-id="{{people.user.id}}"> Add
+                              friend</a>
+                          </div>
+                        </div>
+                        <!-- Card add friend item END -->
+                      </div>
+                      {% endfor %}
+                      <!-- Slider items -->
+
+
+                    </div>
+                  </div>
+                </div>
+                <div class="tns-controls" aria-label="Carousel Navigation" tabindex="0"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Card body END -->
+        </div>
+        {% endif %}
+        <div id="post" class="vstack gap-3">
+
+          {% include 'post/get_next_post.html' %}
+        </div>
+
+      </div>
+
+      <!-- Main content END -->
+
+      <!-- Right sidebar START -->
+      <div class="col-lg-3">
+        <div class="row g-4" style="position:fixed;width:inherit">
+          <!-- Card follow START -->
+          {% if friends_request  %}
+          <div class="col-sm-6 col-lg-12">
+            <div class="card">
+              <!-- Card header START -->
+              <div class="card-header pb-0 border-0">
+                <h5 class="card-title mb-0">Friend Requests</h5>
+              </div>
+
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Connection item START -->
+                {% for friend in friends_request %}
+                <div class="hstack gap-2 mb-3">
+                  <!-- Avatar -->
+                  <div class="avatar">
+                    <a href="{{friend.sender.profile.get_url}}"><img class="avatar-img rounded-circle"
+                        src="{{friend.sender.profile.img.url}}" alt="" title="Tricks Site"></a>
+                  </div>
+                  <!-- Title -->
+                  <div class="overflow-hidden">
+                    <a class="h6 mb-0" href="{{friend.sender.profile.get_url}}">{{friend.sender.full_name}}</a>
+                    <p class="mb-0 small text-truncate">News anchor</p>
+                  </div>
+                  <!-- Button -->
+                  <a href="{% url 'accept_friend_request' friend.sender.id %}" data-id="accept"
+                    class="btn btn-primary-soft rounded-circle icon-md ms-auto friend_request " href="#"><i
+                      class="fa-solid fa-plus">
+                    </i></a>
+                </div>
+                {% endfor %}
+
+                <!-- View more button -->
+
+              </div>
+              <!-- Card body END -->
+            </div>
+          </div>
+          {% endif %}
+          <!-- Card follow START -->
+
+          <!-- Card News START -->
+
+          <!-- Card News END -->
+        </div>
+      </div>
+      <!-- Right sidebar END -->
+
+    </div> <!-- Row END -->
+  </div>
+  <!-- Container END -->
+
+</main>
+
+<!-- Main Chat START -->
+{% include 'includes/friends_sidebar.html' %}
+{% endblock %}

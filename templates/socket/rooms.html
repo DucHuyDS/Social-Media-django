@@ -1,0 +1,41 @@
+
+{% if room.message_set.all %}
+{% if room.users.first == me %}
+<a id="room_{{room.id}}" href="{% url 'chat' room.users.last.id %}"
+    class="nav-link text-start {% if room.users.last.id|slugify == path  %}active {% endif %}">
+{% else %}
+<a id="room_{{room.id}}" href="{% url 'chat' room.users.first.id %}"
+    class="nav-link text-start {% if room.users.first.id|slugify == path  %}active {% endif %}">
+{% endif %}
+        <div class="d-flex">
+            {% if room.users.first == me %}
+            <div
+                class="flex-shrink-0 avatar avatar-story me-2 {% if room.users.last.profile.status_user == True  %} status-online{% endif %}">
+                <img class="avatar-img rounded-circle" src="{{room.users.last.profile.img.url}}" alt="">
+            </div>
+            {% else %}
+            <div
+                class="flex-shrink-0 avatar avatar-story me-2 {% if room.users.first.profile.status_user == True  %} status-online{% endif %}">
+                <img class="avatar-img rounded-circle" } src="{{room.users.first.profile.img.url}}" alt="">
+            </div>
+            {% endif %}
+            <div class="flex-grow-1 d-block">
+                <h6 class="mb-0 mt-1">
+                    {% if room.users.first == me %}
+                    {{room.users.last.first_name}} {{room.users.last.last_name}}
+                    {% else %}
+                    {{room.users.first.first_name}} {{room.users.first.last_name}}
+                    {% endif %}
+
+                </h6>
+                <div class="small text-secondary">
+                    <p id="last_mess_room_{{room.id}}"
+                        style="{% if room.message_set.last.sender == me %} {% elif room.message_set.last.seen == False %} color:red{% endif %}">
+                        {{room.message_set.last|truncatechars:20}}</p>
+                </div>
+            </div>
+        </div>
+    </a>
+</a>
+{% endif %}
+

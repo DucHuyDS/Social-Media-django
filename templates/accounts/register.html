@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+
+    <!-- Container START -->
+    <div class="container">
+        <div class="row justify-content-center align-items-center vh-100 py-5">
+            <!-- Main content START -->
+            <div class="col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
+                <!-- Sign up START -->
+                <div class="card card-body rounded-3 p-4 p-sm-5">
+                    <div class="text-center">
+                        <!-- Title -->
+                        <h1 class="mb-2">Sign up</h1>
+                        <span class="d-block">Already have an account? <a href="{% url 'login' %}">Sign in
+                                here</a></span>
+                    </div>
+                    <!-- Form START -->
+                    <form class="row g-2" method="POST" action="{% url 'register' %}">
+                        {% csrf_token %}
+                        <!-- First name -->
+                        <div class="col-sm-6 ">
+                            <label class="form-label">First name</label>
+                            {{form.first_name}}
+                        </div>
+                        <!-- Last name -->
+                        <div class="col-sm-6 ">
+                            <label class="form-label">Last name</label>
+                            {{form.last_name}}
+                        </div>
+                        <!-- Additional name -->
+
+                        <!-- User name -->
+                        <div class="col-sm-12">
+                            <label class="form-label">Email</label>
+                            {{form.email}}
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="form-label">Password</label>
+                            {{form.password}}
+                        </div>
+                        <div class="col-sm-12">
+                            <label class="form-label">Confirm Password</label>
+                            {{form.confirm_password}}
+
+                        </div>
+
+
+                        <div class="col-sm-12" style="text-align:center;margin-bottom: 10px;"><button type="submit"
+                                class="btn btn-lg btn-primary">Sign me up</button></div>
+                    </form>
+                    {% include 'includes/alerts.html' %}
+                    <!-- Form END -->
+                </div>
+                <!-- Sign up END -->
+            </div>
+        </div> <!-- Row END -->
+    </div>
+    <!-- Container END -->
+
+</main>
+
+{% endblock %}

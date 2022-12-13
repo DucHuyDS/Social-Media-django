@@ -1,0 +1,43 @@
+{% load static %}
+<div class="d-none d-lg-block">
+    <!-- Button -->
+    <a class="icon-md btn btn-primary position-fixed end-0 bottom-0 me-5 mb-5" data-bs-toggle="offcanvas"
+      href="#offcanvasChat" role="button" aria-controls="offcanvasChat">
+      <i class="bi bi-chat-left-text-fill"></i>
+    </a>
+    <!-- Chat sidebar START -->
+    <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasChat">
+      <!-- Offcanvas header -->
+      <div class="offcanvas-header d-flex justify-content-between">
+        <h5 class="offcanvas-title">Contacts </h5>
+        <div class="d-flex">
+  
+          <!-- Close  -->
+          <a href="#" class="btn btn-secondary-soft-hover py-1 px-2" data-bs-dismiss="offcanvas" aria-label="Close">
+            <i class="fa-solid fa-xmark"></i>
+          </a>
+  
+        </div>
+      </div>
+      <!-- Offcanvas body START -->
+      <div class="offcanvas-body pt-0 custom-scrollbar">
+        <!-- Search contact START -->
+        <form class="rounded position-relative" method="GET">
+          <input id="search_contact" name="search_contact" onKeyPress="if (event.which == 13) return false;"
+            class="form-control ps-5 bg-light" placeholder="Search..." aria-label="Search">
+          <button class="btn bg-transparent px-3 py-0 position-absolute top-50 start-0 translate-middle-y"
+            type="submit"><i class="bi bi-search fs-5"> </i></button>
+        </form>
+        <!-- Search contact END -->
+        <ul id="contacts" class="navbar-nav ms-auto">
+          {% include 'profile/contact.html' %}
+  
+  
+        </ul>
+  
+      </div>
+      <!-- Offcanvas body END -->
+    </div>
+
+  
+  </div>

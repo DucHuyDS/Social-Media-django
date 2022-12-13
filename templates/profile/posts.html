@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+<main>
+  
+    <!-- Container START -->
+    <div class="container">
+      <div class="row g-4">
+  
+        <!-- Main content START -->
+        <div class="col-lg-8 vstack gap-2">
+          <!-- My profile START -->
+          {% include 'profile/nav-profile.html' %}
+          <!-- My profile END -->
+  
+            <!-- Share feed START -->
+            <!-- Share feed END -->
+            {% if request.user != user %}
+            <div id="post" style="display:none"></div>
+            {% endif %}
+            {% include 'includes/share_feed.html' %}
+            <div {% if request.user == user %}id="post"{% endif %} class="vstack gap-2">
+              {% if posts %}
+              {% include 'post/get_next_post.html' %}
+              {% else %}
+              <div class="card">
+                <div class="card-header d-sm-flex align-items-center justify-content-between border-0 pb-0">
+                  <p class="">No Posts</p>
+                  <!-- Button modal -->
+                </div>
+              </div>
+              {% endif %}
+            </div>
+        </div>
+        <!-- Main content END -->
+  
+        <!-- Right sidebar START -->
+        {% include 'profile/profile-sidebar.html' %}
+        <!-- Right sidebar END -->
+  
+      </div> <!-- Row END -->
+    </div>
+    <!-- Container END -->
+  
+  </main>
+  <!-- **************** MAIN CONTENT END **************** -->
+  {% include 'includes/friends_sidebar.html' %}
+
+{% endblock %}

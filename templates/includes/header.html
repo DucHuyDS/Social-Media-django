@@ -1,0 +1,143 @@
+{% load static %}
+
+<header class="navbar-light fixed-top header-static bg-mode">
+
+	<!-- Logo Nav START -->
+	<nav class="navbar navbar-expand-lg">
+		<div class="container">
+			<!-- Logo START -->
+			
+			<!-- Logo END -->
+
+      <!-- Responsive navbar toggler -->
+      <!-- <button class="navbar-toggler ms-auto icon-md btn btn-light p-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-animation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+        </button> -->
+       
+			<!-- Main navbar START -->
+			<div class="navbar-brand" id="navbarCollapse">
+
+        <!-- Nav Search START -->
+        <div class="nav mt-7 mt-lg-0 flex-nowrap align-items-center px-10 px-lg-0">
+          <div class="nav-item w-100">
+            <form class="rounded position-relative" method="GET" action="{% url 'search' %}">
+              <input class="form-control ps-5 bg-light" type="search" placeholder="Search..." aria-label="Search" name="keyword">
+              <button class="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit"><i class="bi bi-search fs-5"> </i></button>
+            </form>
+          </div>
+        </div>
+        <!-- Nav Search END -->
+
+			</div>
+  
+        <a href="{% url 'home' %}" class="btn btn-info-soft me-2"> <i class="fa fa-home"></i>  </a>
+
+  
+			<!-- Main navbar END -->
+
+			<!-- Nav right START -->
+      {% if not request.user.is_authenticated %}
+      <a class="nav-link btn btn-primary" href="{% url 'login' %}" style="color:white">
+        Sign in 
+      </a>     
+       {% else %}
+			<ul  class="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
+          <li class="nav-item dropdown ms-2">
+            <a class="nav-link icon-md btn btn-light p-0" href="{% if rooms.first.users.first == request.user %}{% url 'chat' rooms.first.users.last.id %}{% else %}{% url 'chat' rooms.first.users.first.id %}{% endif %}">
+              <span id="icon-chat" class="{% if unread_mess > 0 %}badge-notif{% endif %} animation-blink"></span>
+              <i class="bi bi-chat-left-text-fill fs-6"></i>
+            </a>
+				</li>
+        
+        <li id="noti-header"  class="nav-item dropdown ms-2">
+					<a  class="nav-link icon-md btn btn-light p-0" href="#" id="notifDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside">
+            <span id="icon-noti" class="{% if unread_noti > 0 %}badge-notif{% endif %} animation-blink"></span>
+						<i class="bi bi-bell-fill fs-6"> </i>
+					</a>
+          <div class="dropdown-menu dropdown-animation dropdown-menu-end dropdown-menu-size-md p-0 shadow-lg border-0" aria-labelledby="notifDropdown">
+            <div class="card">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 class="m-0">Notifications </h6>
+              </div>
+              <div class="card-body p-0 " style="overflow-y:scroll;height: 500px;" >
+                <ul id="notifications" class="list-group list-group-flush list-unstyled p-2  " >
+                  <!-- Notif item -->
+               
+                  <!-- Notif item -->
+                 
+                  <!-- Notif item -->
+                  <!-- lay cai nay -->
+                  {% for noti in notifications  %}
+               
+                    <li >
+                      <a href="{{noti.link}}" class="list-group-item list-group-item-action rounded {% if noti.seen == False %}badge-unread{% endif %} d-flex border-0 mb-1 p-3">
+                        <div class="avatar text-center d-none d-sm-inline-block">
+                          <img class="avatar-img rounded-circle" src="{{noti.generator.profile.img.url}}" alt="">
+                        </div>
+                        <!-- list-group-item list-group-item-action rounded badge-unread d-flex border-0 mb-1 p-3 -->
+                        <div class="ms-sm-3">
+                          <div class="d-flex">
+                            <p class="small mb-2">{{noti}} </p>
+                            <p class="small ms-5">{{noti.timestamp|timesince}}</p>
+                          </div>
+                        </div>
+                      </a>
+                    </li>
+                  {% endfor %}
+                  <!-- lay cai nay -->
+                  <!-- Notif item -->
+                  
+                </ul>
+              </div>
+              
+            </div>
+          </div>
+				</li>
+        <!-- Notification dropdown END -->
+
+        <li class="nav-item ms-2 dropdown">
+					<a class="nav-link btn icon-md p-0" href="#" id="profileDropdown" role="button" data-bs-auto-close="outside" data-bs-display="static" data-bs-toggle="dropdown" aria-expanded="false">
+						<img class="avatar-img rounded-2" src="{{request.user.profile.img.url}}" alt="">
+					</a>
+          <ul class="dropdown-menu dropdown-animation dropdown-menu-end pt-3 small me-md-n3" aria-labelledby="profileDropdown">
+            <!-- Profile info -->
+            <li class="px-3">
+              <div class="d-flex align-items-center position-relative">
+                <!-- Avatar -->
+                <div class="avatar me-3">
+                  <img class="avatar-img rounded-circle" src="{{request.user.profile.img.url}}" alt="avatar">
+                </div>
+                <div>
+                  <a class="h6 stretched-link" href="#">{{request.user.first_name}} {{request.user.last_name}}</a>
+                  <p class="small m-0">Web Developer</p>
+                </div>
+              </div>
+              <a class="dropdown-item btn btn-primary-soft btn-sm my-2 text-center" href="{% url 'posts' request.user.username %}">View profile</a>
+            </li>
+            <!-- Links -->
+            <li><a class="dropdown-item" href="{% url 'account' %}"><i class="bi bi-gear fa-fw me-2"></i>Settings & Privacy</a></li>
+           
+        
+            <li class="dropdown-divider"></li>
+            <li><a class="dropdown-item bg-danger-soft-hover" href="{% url 'logout' %}"><i class="bi bi-power fa-fw me-2"></i>Sign Out</a></li>
+            
+            <!-- Dark mode switch START -->
+            <li> <hr class="dropdown-divider"></li>
+            <!-- Dark mode switch START -->
+            
+            <!-- Dark mode switch END -->
+          </ul>
+				</li>
+			  <!-- Profile START -->
+        
+			</ul>
+      {% endif %}
+			<!-- Nav right END -->
+		</div>
+	</nav>
+	<!-- Logo Nav END -->
+</header>

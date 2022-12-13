@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+<main>
+
+  <!-- Container START -->
+  <div class="container">
+    <div class="row g-4">
+
+      <!-- Main content START -->
+      <div class="col-lg-8 vstack gap-4">
+        <!-- My profile START -->
+        {% include 'profile/nav-profile.html' %}
+        <!-- My profile END -->
+        <div class="card">
+          <!-- Card header START -->
+          <div class="card-header d-sm-flex align-items-center justify-content-between border-0 pb-0">
+            <h5 class="card-title">Photos</h5>
+            <!-- Button modal -->
+          </div>
+          <!-- Card header END -->
+          <!-- Card body START -->
+          <div class="card-body">
+            <!-- Photos of you tab START -->
+            <div class="row g-3">
+
+              <!-- Add photo START -->
+              {% if request.user == user %}
+              <div class="col-sm-6 col-md-4 col-lg-3">
+                <div
+                  class="border border-2 py-5 border-dashed h-100 rounded text-center d-flex align-items-center justify-content-center position-relative">
+                  <a class="stretched-link" href="#!" data-bs-toggle="modal" data-bs-target="#feedActionPhoto">
+                    <i class="fa-solid fa-camera-retro fs-1"></i>
+                    <h6 class="mt-2">Add photo</h6>
+                  </a>
+                </div>
+              </div>
+              {% endif %}
+              {% if media_preview|length == 0 and request.user != user %}
+              No Photos
+              {% else %}
+              {% for post in posts %}
+              {% if post.media_set.all%}
+              {% for media in post.media_set.all %}
+              <div class="col-sm-6 col-md-4 col-lg-3">
+                <a class="h-100" href="{{media.img.url}}" data-glightbox data-gallery="image-popup">
+                  {% if '.video' in file.img.url or '.mp4' in file.img.url %}
+
+                  <video class="player-html" controls>
+                    <source src="{{media.img.url}}" type="video/mp4">
+                  </video>
+                  {% else %}
+
+                  <img class="rounded img-fluid" src="{{media.img.url}}" alt="Image"
+                    style="border-style: solid;height:inherit">
+                  {% endif %}
+                </a>
+              </div>
+              {% endfor %}
+              {% endif %}
+              {% endfor %}
+              {% endif %}
+            </div>
+            <!-- Photos of you tab END -->
+          </div>
+          <!-- Card body END -->
+        </div>
+        <!-- media END -->
+
+      </div>
+
+
+
+      <!-- Main content END -->
+
+      <!-- Right sidebar START -->
+      {% include 'profile/profile-sidebar.html' %}
+      <!-- Right sidebar END -->
+
+    </div> <!-- Row END -->
+  </div>
+  <!-- Container END -->
+
+</main>
+{% include 'includes/friends_sidebar.html' %}
+<!-- **************** MAIN CONTENT END **************** -->
+<div class="modal fade" id="feedActionPhoto" tabindex="-1" aria-labelledby="feedActionPhotoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <!-- hx-encoding="multipart/form-data" hx-target="#post" hx-post="{% url 'create_post' %}?offset=0" -->
+    <form method="POST" enctype="multipart/form-data" hx-encoding="multipart/form-data" hx-target="#post"
+      hx-post="{% url 'create_post' %}">
+      {% csrf_token %}
+      <div class="modal-content">
+        <!-- Modal feed header START -->
+        <div class="modal-header">
+          <h5 class="modal-title" id="feedActionPhotoLabel">Add post photo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- Modal feed header END -->
+
+        <!-- Modal feed body START -->
+        <div class="modal-body">
+          <!-- Add Feed -->
+          <div class="d-flex mb-3">
+            <!-- Avatar -->
+            <div class="avatar avatar-xs me-2">
+              <img class="avatar-img rounded-circle" src="{{request.user.profile.img.url}}" alt="">
+            </div>
+            <!-- Feed box  -->
+            <textarea class="form-control pe-4 fs-3 lh-1 border-0" name="content" rows="2"
+              placeholder="Share your thoughts..."></textarea>
+
+          </div>
+
+          <!-- Dropzone photo START -->
+          <div>
+            <label class="form-label"><input type="file" accept=".png, .jpg, .jpeg, .video, .mp4" name="file"
+                multiple="multiple"></label>
+
+          </div>
+          <!-- Dropzone photo END -->
+
+        </div>
+        <!-- Modal feed body END -->
+
+        <!-- Modal feed footer -->
+        <div class="modal-footer ">
+          <!-- Button -->
+          <button type="button" class="btn btn-danger-soft me-2" data-bs-dismiss="modal">Cancel</button>
+          <button id="share_feed" type="submit" data-bs-dismiss="modal" class="btn btn-success-soft">Post</button>
+        </div>
+        <!-- Modal feed footer -->
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'includes/header.html' %}
+<main>
+  
+    <!-- Container START -->
+    <div class="container">
+      <div class="row g-4">
+  
+        <!-- Main content START -->
+        <div class="col-lg-8 vstack gap-4">
+          <!-- My profile START -->
+          {% include 'profile/nav-profile.html' %}
+          <!-- My profile END -->
+  
+           
+                <!-- Card START -->
+                
+        
+                  <!-- Card Connections START -->
+                  <div class="card">
+                    <!-- Card header START -->
+                    <div class="card-header border-0 pb-0">
+                      <h5 class="card-title"> Connections</h5> 
+                    </div>
+                    <!-- Card header END -->
+                    <!-- Card body START -->
+                    <div class="card-body">
+                      <!-- Connections Item -->
+                      {% if not profile.friends.all %}
+                      <p>No friends :(</p>
+                      {% else %}
+                      {% for friend in profile.friends.all %}
+                      <div class="d-md-flex align-items-center mb-4 friend{{friend.id}}" >
+                        <!-- Avatar -->
+                        <div class="avatar me-3 mb-3 mb-md-0">
+                          <a href="{{friend.profile.get_url}}"> <img class="avatar-img rounded-circle" src="{{friend.profile.img.url}}" alt=""> </a>
+                        </div>
+                        <!-- Info -->
+                        <div class="w-100">
+                          <div class="d-sm-flex align-items-start">
+                            <h6 class="mb-0"><a href="{{friend.profile.get_url}}">{{friend.first_name}} {{friend.last_name}}</a></h6>
+                           
+                        </div>
+                      </div>
+                      <!-- Button -->
+                      <div class="ms-md-auto d-flex">
+                        {% if request.user == user %}
+                        <a onclick="confirm('Are you sure?')&&delete_friend('{{friend.id}}')" class="btn btn-danger-soft btn-sm mb-0 me-2"> Unfriend </a>
+                        <a href="{% url 'chat' friend.id %}" class="btn btn-primary-soft btn-sm mb-0"> Message </a>
+                        {% else %}
+                        <a href="{{friend.profile.get_url}}" class="btn btn-primary-soft btn-sm mb-0"> View</a>
+                        {% endif %}
+                      </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+        
+                </div>
+                <!-- Card body END -->
+                </div>
+                <!-- Card Connections END -->
+        
+              </div>
+           
+        <!-- Main content END -->
+  
+        <!-- Right sidebar START -->
+        {% include 'profile/profile-sidebar.html' %}
+        <!-- Right sidebar END -->
+  
+      </div> <!-- Row END -->
+    </div>
+    <!-- Container END -->
+  
+  </main>
+  <!-- **************** MAIN CONTENT END **************** -->
+  
+  {% include 'includes/friends_sidebar.html' %}
+{% endblock %}

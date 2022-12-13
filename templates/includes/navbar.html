@@ -1,0 +1,84 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg mx-0" style="background-color:red">
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSideNavbar">
+      <!-- Offcanvas header -->
+      <div class="offcanvas-header">
+        <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"
+          style="z-index: 1;"></button>
+      </div>
+
+      <!-- Offcanvas body -->
+      <div class="offcanvas-body d-block px-2 px-lg-0" style="position:fixed;width:255px">
+        <!-- Card START -->
+        {% if request.user.is_authenticated %}
+        <div class="card overflow-hidden">
+          <!-- Cover image -->
+          <div class="h-100px"
+            style="background-image:url({{request.user.profile.cover_img.url}}); background-position: center; background-size: cover; background-repeat: no-repeat;">
+          </div>
+          <!-- Card body START -->
+          <div class="card-body pt-0">
+            <div class="text-center">
+              <!-- Avatar -->
+              <div class="avatar avatar-lg mt-n5 mb-3">
+                <a href="{{request.user.profile.get_url}}">
+               <img class="avatar-img rounded border border-white border-3"
+                    src="{{request.user.profile.img.url}}" alt="">
+              </div>
+              <!-- Info -->
+              <h5 class="mb-0"> {{request.user.first_name}} {{request.user.last_name}}</h5><br>
+            </a>
+              <!-- User stat START -->
+            
+              <!-- User stat END -->
+            </div>
+
+            <!-- Divider -->
+            <hr>
+            <!-- assets/images/icon/calendar-outline-filled.svg -->
+            <!-- Side Nav START -->
+            <ul class="nav nav-link-secondary flex-column fw-bold gap-2">
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'posts' request.user.username %}">
+                    <nobr><img class="me-2 h-20px fa-fw"
+                      src="{% static 'images/icon/home-outline-filled.svg' %}" alt=""><span>Feed</span></nobr></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' request.user.username %}"><nobr> <img class="me-2 h-20px fa-fw"
+                    src="{% static 'images/icon/calendar-outline-filled.svg' %}" alt=""><span>About </span></nobr></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'friends' request.user.username %}"> <nobr><img
+                    class="me-2 h-20px fa-fw" src="{% static 'images/icon/person-outline-filled.svg' %}"
+                    alt=""><span>Friends </span></nobr></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'media' request.user.username %}"><nobr> <img class="me-2 h-20px fa-fw"
+                    src="{% static 'images/icon/earth-outline-filled.svg' %}" alt=""><span>Media </span></nobr></a>
+              </li>
+
+
+
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'account' %}"><nobr> <img class="me-2 h-20px fa-fw"
+                    src="{% static 'images/icon/cog-outline-filled.svg' %}" alt=""><span>Settings </span></nobr></a>
+              </li>
+            </ul>
+            <!-- Side Nav END -->
+          </div>
+          <!-- Card body END -->
+          <!-- Card footer -->
+
+        </div>
+        <!-- Card END -->
+
+        <!-- Helper link START -->
+    
+        <!-- Helper link END -->
+        <!-- Copyright -->
+       
+        {% endif %}
+      </div>
+      
+    </div>
+  </nav>

@@ -1,0 +1,165 @@
+{% for comment in post.commentpost_set.all  %}
+        <li id="{{comment.id}}" class="comment-item" >
+          {% if not comment.parent %}
+          <div  class="d-flex">
+            <!-- Avatar -->
+            <div class="avatar avatar-xs">
+              <a href="#"> <img class="avatar-img rounded-circle" src="{{comment.user.profile.img.url}}" alt="">
+              </a>
+            </div>
+            <div class="ms-2" style="width:100%">
+              <!-- Comment by -->
+              <div class="bg-light rounded-start-top-0 p-3 rounded">
+                <div class="d-flex justify-content-between">
+                  <h6 class="mb-1"> <a href="{{comment.user.profile.get_url}}"> {{comment.user.first_name}} {{comment.user.last_name}}</a></h6>
+                  <small class="ms-2">{{comment.created_at|timesince}}</small>
+                </div>
+                <p class="small mb-0">{{comment.content}}</p>
+              </div>
+              <!-- Comment rect -->
+              <ul class="nav nav-divider py-2 small">
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                  <button class="nav-link" name="likecomment" value="{{comment.id}}"
+                    style="border:none;background-color:white;{% if request.user in comment.likes.all %}color:red{% endif %}">
+                    Like{% if comment.likes.count > 0 %} ({{comment.likes.count}}){% endif %}</button>
+                </li>
+                <li class="nav-item ">
+                  <a class="nav-link" id="reply" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                    data-bs-auto-close="outside">
+                    Reply
+                  </a>
+                  <div
+                    class="dropdown-menu dropdown-animation dropdown-menu-start dropdown-menu-size-md p-0 shadow-lg border-0"
+                    aria-labelledby="reply">
+                    <form class="CommentForm Reply" method="POST" data-post="{{post.id}}" data-parent="{{comment.id}}"
+                      data-url="{% url 'comment' post.id %}">
+                      {% csrf_token %}
+                      <input class="form-control pe-4 " rows="1" placeholder="Reply..." name="commentparent" required>
+                      <input class="form-control pe-4 " type="hidden" name="comment" value="{{comment.id}}">
+                    </form>
+
+                  </div>
+                </li>
+                {% if request.user.is_staff or request.user == comment.user or request.user == post.author %}
+                <li class="dropdown nav-item">
+                  <a href="#" class="text-secondary py-1 px-2" id="cardFeedAction"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <i class="bi bi-three-dots"></i>
+                </a>
+                <!-- Card feed action dropdown menu -->
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+                  
+                  <li><a class="dropdown-item" onclick="confirm('Are you sure?')&& delete_comment('{{comment.id}}')" style="cursor: pointer;"> <i class="bi bi-x-circle fa-fw pe-2"></i>Delete</a></li>
+                  
+                </ul>
+              </li>
+              {% endif %}
+              {% endif %}
+            </ul>
+            </div>
+          </div>
+          {% endif %}
+          <ul class="comment-wrap list-unstyled">
+            <!-- Comment item START -->
+            <li class="comment-item">
+              <!-- Comment item nested START -->
+              <ul class="commentchild{{comment.id}} comment-item-nested list-unstyled" name="{{comment.id}}">
+                <!-- Comment item START -->
+
+                {% for reply in comment.children %}
+                <li class="comment-item" id="{{reply.id}}">
+                  <div class="d-flex">
+                    <!-- Avatar -->
+                    <div class="avatar avatar-xs">
+                      <a href="#!"><img class="avatar-img rounded-circle" src="{{reply.user.profile.img.url}}"
+                          alt=""></a>
+                    </div>
+                    <!-- Comment by -->
+                    <div class="ms-2" style="width: 100%">
+                      <div class="bg-light p-3 rounded">
+                        <div class="d-flex justify-content-between">
+                          <h6 class="mb-1"> <a href="#!"> {{reply.user.first_name}} {{reply.user.last_name}}</a>
+                          </h6>
+                          <small class="ms-2">{{reply.created_at|timesince}}</small>
+                        </div>
+                        <p class="small mb-0">{{reply.content}}</p>
+                      </div>
+                      <!-- Comment react -->
+                      <ul class="nav nav-divider py-2 small">
+                        {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                          <button class="nav-link" name="likecomment" value="{{reply.id}}"
+                            style="border:none;background-color:white;{% if request.user in reply.likes.all %}color:red{% endif %}">
+                            Like{% if reply.likes.count > 0 %} ({{reply.likes.count}}){% endif %}</button>
+                        </li>
+                        <li class="nav-item ">
+                          <a class="nav-link" id="reply" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                            data-bs-auto-close="outside">
+                            Reply
+                          </a>
+                          <div
+                            class="dropdown-menu dropdown-animation dropdown-menu-start dropdown-menu-size-md p-0 shadow-lg border-0"
+                            aria-labelledby="reply">
+                            <form class="CommentForm Reply" data-url="{% url 'comment' post.id %}" " method=" POST"
+                              data-post="{{post.id}}" data-parent="{{comment.id}}">
+                              <input class="form-control pe-4 " rows="1" placeholder="Reply..." name="commentparent"
+                                required>
+                              <input class="form-control pe-4 " type="hidden" name="comment" value="{{comment.id}}">
+                            </form>
+                          </div>
+                        </li>
+                        {% if request.user.is_staff or request.user == comment.user or request.user == post.author %}
+                        <li class="dropdown nav-item">
+                          <a href="#" class="text-secondary py-1 px-2" id="cardFeedAction"
+                          data-bs-toggle="dropdown" aria-expanded="false">
+                          <i class="bi bi-three-dots"></i>
+                        </a>
+                        <!-- Card feed action dropdown menu -->
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cardFeedAction">
+                          
+                          <li><a class="dropdown-item" onclick="confirm('Are you sure?')&& delete_comment('{{reply.id}}')" style="cursor: pointer;"> <i class="bi bi-x-circle fa-fw pe-2"></i>Delete</a></li>
+                          
+                        </ul>
+                      </li>
+                      
+                      {% endif %}
+                      {% endif %}
+                    </ul>
+                    </div>
+                  </div>
+                </li>
+                {% endfor %}
+
+              </ul>
+              {% if comment.children %}
+              {% if request.user.is_authenticated %}
+            <li class="comment-item comment-item-nested" style="margin-bottom: 10px;">
+              <div class="d-flex">
+                <!-- Avatar -->
+                <div class="avatar avatar-xs">
+                  <a href="#!"><img class="avatar-img rounded-circle" src="{{request.user.profile.img.url}}" alt=""></a>
+                </div>
+                <!-- Comment by -->
+                <div class="ms-2" style="width: 100%">
+                  <!-- Comment react -->
+                  <form class="CommentForm Reply" method="POST" data-post="{{post.id}}" data-parent="{{comment.id}}"
+                    data-url="{% url 'comment' post.id %}">
+                    {% csrf_token %}
+                    <input class="form-control pe-4 " rows="1" placeholder="Reply..." name="commentparent" required>
+                    <input class="form-control pe-4 " type="hidden" name="comment" value="{{comment.id}}">
+                  </form>
+
+                </div>
+              </div>
+            </li>
+            {% endif %}
+            {% endif %}
+        </li>
+        
+
+
+
+      </ul>
+        </li>
+        {% endfor %}

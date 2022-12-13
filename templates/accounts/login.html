@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block content %}
+
+<main>
+
+
+  <!-- Container START -->
+  <div class="container">
+    <div class="row justify-content-center align-items-center vh-100 py-5">
+      <!-- Main content START -->
+      <div class="col-sm-10 col-md-8 col-lg-7 col-xl-6 col-xxl-5">
+        <!-- Sign in START -->
+        <div class="card card-body text-center p-4 p-sm-5">
+          {% include 'includes/alerts.html' %}
+          <!-- Title -->
+          <h1 class="mb-2">Sign in</h1>
+          <p class="mb-0">Don't have an account?<a href="{% url 'register' %}"> Click here to sign up</a></p>
+          <!-- Form START -->
+          <form class="mt-sm-4" method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <!-- Email -->
+            <div class="mb-3 input-group-lg">
+              <input type="email" class="form-control" placeholder="Enter email" name="email">
+            </div>
+            <!-- New password -->
+            <div class="mb-3 position-relative">
+              <!-- Password -->
+              <div class="input-group input-group-lg">
+                <input class="form-control fakepassword" type="password" id="psw-input" placeholder="Enter password"
+                  name="password" required>
+
+              </div>
+              <!-- Pswmeter -->
+              <div id="pswmeter" class="mt-2"></div>
+
+            </div>
+            <!-- Remember me -->
+            <div class="mb-3 d-sm-flex justify-content-between">
+              <div>
+                <input type="checkbox" class="form-check-input" id="rememberCheck">
+                <label class="form-check-label" for="rememberCheck">Remember me?</label>
+              </div>
+              <a href="{% url 'account_reset_password' %}">Forgot password?</a>
+            </div>
+            <!-- Button -->
+            <div class="d-grid"><button type="submit" class="btn btn-lg btn-primary">Login</button></div>
+            <!-- Copyright -->
+
+          </form>
+          <form method="post" action="/accounts/google/login/">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-lg btn-danger"><i class="bi bi-google"></i> Sign in with
+              Google</button>
+          </form>
+
+
+
+          <!-- Form END -->
+        </div>
+        <!-- Sign in START -->
+      </div>
+    </div> <!-- Row END -->
+  </div>
+  <!-- Container END -->
+
+</main>
+{% endblock %}

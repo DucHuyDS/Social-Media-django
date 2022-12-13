@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'includes/header.html' %}
+
+<main>
+
+  <!-- Container START -->
+  <div class="container">
+    <div class="row g-4">
+
+      <!-- Sidenav START -->
+      <div class="col-lg-3">
+
+        <!-- Advanced filter responsive toggler START -->
+        <div class="d-flex align-items-center d-lg-none">
+          <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasSideNavbar" aria-controls="offcanvasSideNavbar">
+            <i class="btn btn-primary fw-bold fa-solid fa-sliders-h"></i>
+            <span class="h6 mb-0 fw-bold d-lg-none ms-2">My profile</span>
+          </button>
+        </div>
+
+        <!-- Navbar START-->
+        {% include 'includes/navbar.html' %}
+        <!-- Navbar END-->
+      </div>
+      <!-- Sidenav END -->
+
+      <!-- Main content START -->
+      <div class="col-md-8 col-lg-6 vstack gap-4">
+        <!-- Story START -->
+
+        <!-- Story END -->
+
+        <!-- Share feed START -->
+
+        <!-- asdasd -->
+        {% include 'post/post.html' %}
+
+      </div>
+      <!-- Main content END -->
+
+      <!-- Right sidebar START -->
+      <div class="col-lg-3">
+        <div class="row g-4" style="position:fixed;width:inherit">
+          <!-- Card follow START -->
+          {% if friends_request  %}
+          <div class="col-sm-6 col-lg-12">
+            <div class="card">
+              <!-- Card header START -->
+              <div class="card-header pb-0 border-0">
+                <h5 class="card-title mb-0">Friend Requests</h5>
+              </div>
+
+              <!-- Card header END -->
+              <!-- Card body START -->
+              <div class="card-body">
+                <!-- Connection item START -->
+                {% for friend in friends_request %}
+                <div class="hstack gap-2 mb-3">
+                  <!-- Avatar -->
+                  <div class="avatar">
+                    <a href="{{friend.sender.profile.get_url}}"><img class="avatar-img rounded-circle"
+                        src="{{friend.sender.profile.img.url}}" alt="" title="Tricks Site"></a>
+                  </div>
+                  <!-- Title -->
+                  <div class="overflow-hidden">
+                    <a class="h6 mb-0" href="{{friend.sender.profile.get_url}}">{{friend.sender.full_name}}</a>
+                    <p class="mb-0 small text-truncate">News anchor</p>
+                  </div>
+                  <!-- Button -->
+                  <a href="{% url 'accept_friend_request' friend.sender.id %}" data-id="accept"
+                    class="btn btn-primary-soft rounded-circle icon-md ms-auto friend_request " href="#"><i
+                      class="fa-solid fa-plus">
+                    </i></a>
+                </div>
+                {% endfor %}
+
+                <!-- View more button -->
+
+              </div>
+              <!-- Card body END -->
+            </div>
+          </div>
+          {% endif %}
+          <!-- Card follow START -->
+
+          <!-- Card News START -->
+
+          <!-- Card News END -->
+        </div>
+      </div>
+      <!-- Right sidebar END -->
+
+    </div> <!-- Row END -->
+  </div>
+  <!-- Container END -->
+
+</main>
+<div id="post" style="display:none"></div>
+
+{% endblock %}

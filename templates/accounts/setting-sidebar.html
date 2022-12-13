@@ -1,0 +1,40 @@
+{% load static %}
+<nav class="navbar navbar-light navbar-expand-lg mx-0">
+  <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
+    <!-- Offcanvas header -->
+    <div class="offcanvas-header">
+      <button type="button" class="btn-close text-reset ms-auto" data-bs-dismiss="offcanvas"
+        aria-label="Close"></button>
+    </div>
+    <!-- Offcanvas body -->
+    <div class="offcanvas-body p-0">
+      <!-- Card START -->
+      <div class="card w-100">
+        <!-- Card body START -->
+        <div class="card-body">
+
+          <!-- Side Nav START -->
+          <ul class="nav nav-tabs nav-pills nav-pills-soft flex-column fw-bold gap-2 border-0">
+            <li class="nav-item" data-bs-dismiss="offcanvas">
+              <a class="nav-link d-flex mb-0 {% if '/accounts/' == request.path %}active{% endif %}"
+                href="{% url 'account' %}"><img class="me-2 h-20px fa-fw"
+                  src="{% static 'images/icon/person-outline-filled.svg' %}" alt=""><span>Account </span></a>
+            </li>
+            <li class="nav-item" data-bs-dismiss="offcanvas">
+              <a class="nav-link d-flex mb-0 {% if 'password' in request.path %}active{% endif %}"
+                href="{% url 'password' %}"> <img class="me-2 h-20px fa-fw"
+                  src="{% static 'images/icon/handshake-outline-filled.svg' %}" alt=""><span>Password</span> </span></a>
+            </li>
+          </ul>
+          <!-- Side Nav END -->
+        </div>
+        <!-- Card body END -->
+        <!-- Card footer -->
+        <div class="card-footer text-center py-2">
+          <a class="btn btn-link text-secondary btn-sm" href="{% url 'posts' request.user.username %}">View Profile </a>
+        </div>
+      </div>
+      <!-- Card END -->
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+{% include 'includes/header.html' %}
+<main>
+    <!-- Container START -->
+    <div class="container">
+        <div class="row">
+
+            <!-- Sidenav START -->
+            <div class="col-lg-3">
+
+                <!-- Advanced filter responsive toggler START -->
+                <!-- Divider -->
+                <div class="d-flex align-items-center mb-4 d-lg-none">
+                    <button class="border-0 bg-transparent" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                        <i class="btn btn-primary fw-bold fa-solid fa-sliders"></i>
+                        <span class="h6 mb-0 fw-bold d-lg-none ms-2">Settings</span>
+                    </button>
+                </div>
+                <!-- Advanced filter responsive toggler END -->
+
+                {% include 'accounts/setting-sidebar.html' %}
+            </div>
+            <div class="col-lg-6 vstack gap-4">
+                <!-- Setting Tab content START -->
+                <div class="tab-content py-0 mb-0">
+
+                    <!-- Account setting tab START -->
+                    <div class="tab-pane show active fade" id="nav-setting-tab-1">
+                        <!-- Account settings START -->
+                        <div class="card mb-4">
+                            <!-- Title START -->
+                            <div class="card-header border-0 pb-0">
+                                {% include 'includes/alerts.html' %}
+                                <h1 class="h5 card-title">Account Settings</h1>
+                                <p class="mb-0">He moonlights difficult engrossed it, sportsmen. Interested has all
+                                    Devonshire difficulty gay assistance joy. Unaffected at ye of compliment alteration
+                                    to.</p>
+                            </div>
+                            <!-- Card header START -->
+                            <!-- Card body START -->
+                            <div class="card-body">
+                                <!-- Form settings START -->
+                                <form class="row g-3" method="POST" action="{% url 'account' %}" name="account">
+                                    {% csrf_token %}
+                                    <!-- First name -->
+                                    <div class="col-sm-6">
+                                        <label class="form-label">First name</label>
+                                        {{form.first_name}}
+                                    </div>
+                                    <!-- Last name -->
+                                    <div class="col-sm-6">
+                                        <label class="form-label">Last name</label>
+                                        {{form.last_name}}
+                                    </div>
+                                    <!-- Additional name -->
+
+                                    <!-- User name -->
+                                    <div class="col-sm-6">
+                                        <label class="form-label">User name</label>
+                                        {{form.username}} </div>
+                                    <!-- Birthday -->
+                                    <div class="col-lg-6">
+                                        <label class="form-label">Date joined </label>
+                                        <input type="text" class="form-control flatpickr"
+                                            value="{{request.user.date_joined}}" disabled>
+                                    </div>
+                                    <!-- Allow checkbox -->
+
+                                    <!-- Phone number -->
+                                    <div class="col-sm-6">
+                                        <label class="form-label">Phone number</label>
+                                        {{form.phone}}
+                                        <!-- Add new number -->
+                                    </div>
+                                    <!-- Phone number -->
+                                    <div class="col-sm-6">
+                                        <label class="form-label">Email</label>
+                                        {{form.email}}
+                                        <!-- Add new email -->
+                                    </div>
+                                    <!-- Page information -->
+
+                                    <!-- Button  -->
+                                    <div class="col-12 text-end">
+                                        <button type="submit" class="btn btn-sm btn-primary mb-0">Save changes</button>
+                                    </div>
+                                </form>
+                                <!-- Settings END -->
+                            </div>
+                            <!-- Card body END -->
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+                <!-- Setting Tab content END -->
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

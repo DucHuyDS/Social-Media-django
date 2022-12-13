@@ -1,0 +1,132 @@
+<div class="col-lg-4">
+  
+    <div class="row g-4">
+
+      <!-- Card START -->
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <div class="card-header border-0 pb-0">
+            <h5 class="card-title">About</h5>
+            <!-- Button modal -->
+          </div>
+          <!-- Card body START -->
+          <div class="card-body position-relative pt-0">
+            
+            {% if user.profile.overview %}
+            <p>{{user.profile.overview}}</p>
+            {% endif %}
+            <!-- Date time -->
+            <ul class="list-unstyled mt-3 mb-0">
+              
+              <li class="mb-2"><i class="bi bi-calendar2-plus me-1"></i>Joined on:<strong>  {{user.date_joined}}</strong></li>
+              {% if user.profile.born %}
+              <li class="mb-2"> <i class="bi bi-calendar-date fa-fw pe-1"></i> Born: <strong> {{user.profile.born}} </strong> </li>
+              {% endif %}
+              {% if user.profile.status %}
+              <li class="mb-2"> <i class="bi bi-heart fa-fw pe-1"></i> Status: <strong> {{user.profile.status}} </strong> </li>
+              {% endif %}
+              {% if user.profile.gender %}
+              <li class="mb-2"> <i class="fa fa-{% if user.profile.gender == 'Male' %}mars{% else %}venus{% endif %}"></i> Gender: <strong> {{user.profile.gender}} </strong> </li>
+              {% endif %}
+              {% if user.profile.hometown %}
+              <li class="mb-2"> <i class="fa fa-house"></i> Home town: <strong> {{user.profile.hometown}} </strong> </li>
+              {% endif %}
+            </ul>
+          </div>
+          <!-- Card body END -->
+        </div>
+      </div>
+      <!-- Card END -->
+
+      <!-- Card START -->
+  
+      <!-- Card END -->
+      
+      <!-- Card START -->
+      {% if media_preview %}
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <!-- Card header START -->
+          <div class="card-header d-sm-flex justify-content-between border-0">
+            <h5 class="card-title">Media</h5>
+            <a class="btn btn-primary-soft btn-sm" href="{% url 'media' user.username  %}"> See all photo</a>
+          </div>
+          <!-- Card header END -->
+          <!-- Card body START -->
+          <div class="card-body position-relative pt-0">
+            <div class="row g-2">
+              <!-- Photos item -->
+              {% for media in media_preview %}  
+              <div class="col-6">
+                <a href="{{media}}" data-gallery="image-popup-preview" data-glightbox="">
+                  {% if '.video' in media or '.mp4' in media %}
+                       
+                  <video class="player-html" controls>
+                    <source src="{{media}}" type="video/mp4" style="border-style: solid">
+                  </video>
+                  {% else %}
+            
+                  <img class="rounded img-fluid" src="{{media}}" alt="Image"
+                  style="border-style: solid"    >
+                  {% endif %}                </a>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+          <!-- Card body END -->
+        </div>
+      </div>
+      {% endif %}
+      <!-- Card END -->
+
+      <!-- Card START -->
+      {% if profile.friends.all.count > 0 %}
+      <div class="col-md-6 col-lg-12">
+        <div class="card">
+          <!-- Card header START -->
+          <div class="card-header d-sm-flex justify-content-between align-items-center border-0">
+            <h5 class="card-title">Friends <span class="badge bg-danger bg-opacity-10 text-danger">{{profile.friends.all.count}}</span></h5>
+            <a class="btn btn-primary-soft btn-sm" href="{% url 'friends' user.username %}"> See all friends</a>
+          </div>
+          <!-- Card header END -->
+          <!-- Card body START -->
+          <div class="card-body position-relative pt-0">
+            <div class="row g-3">
+              {% for friend in profile.friends.all|slice:":4" %}
+              <div class="col-6 friend{{friend.id}}">
+                <!-- Friends item START -->
+                <div class="card shadow-none text-center h-100">
+                  <!-- Card body -->
+                  <div class="card-body p-2 pb-0">
+                    <div class="avatar avatar-story avatar-xl">
+                      <a href="{{friend.profile.get_url}}"><img class="avatar-img rounded-circle" src="{{friend.profile.img.url}}" alt=""></a>
+                    </div>
+                    <h6 class="card-title mb-1 mt-3"> <a href="{{friend.profile.get_url}}">{{friend.full_name}} </a></h6>
+                    <p class="mb-0 small lh-sm">@{{friend.username}}</p>
+                  </div>
+                  <!-- Card footer -->
+                  
+                  <div class="card-footer p-2 border-0">
+                    {% if request.user == user %}
+                    <a href="{% url 'chat' friend.id %}" class="btn btn-sm btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Send message"> <i class="bi bi-chat-left-text"></i> </a>
+                    <a onclick="confirm('Are you sure?')&&delete_friend('{{friend.id}}')"  class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove friend"> <i class="bi bi-person-x"></i> </a>
+                    {% endif %}
+                  </div>
+                </div>
+                <!-- Friends item END -->
+              </div>
+              {% endfor %}
+            
+             
+             
+
+            </div>
+          </div>
+          <!-- Card body END -->
+        </div>
+      </div>
+      {% endif %}
+      <!-- Card END -->
+    </div>
+
+  </div>

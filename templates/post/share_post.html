@@ -1,0 +1,153 @@
+
+<div class="card" id="{{post.id}}" style="overflow-y:scroll">
+  <!-- Card header START -->
+  <div class="card-header border-0 pb-0">
+    <!-- 22222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222222 -->
+    <div class="d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <!-- Avatar -->
+        <div class="avatar me-2">
+          <a href="{{post.author.profile.get_url}}"> <img class="avatar-img rounded-circle"
+              src="{{post.author.profile.img.url}}" alt=""> </a>
+        </div>
+        <!-- Info -->
+        <div>
+          <h6 class="card-title mb-0"> <a href="{% url 'posts' post.author.username %}">
+              {{post.author.first_name}} {{post.author.last_name}} {{post.id}}</a></h6>
+          <div class="nav nav-divider">
+            <p class="nav-item mb-0 small">{{post.created_at | timesince}} ago {% if post.edite  %}(Edited){% endif %}
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- Card share action START -->
+      <!-- Card share action START -->
+
+      <!-- Card share action END -->
+    </div>
+  </div>
+  <div class="card-body">
+    <p style="margin:0">{{post.content}} </p>
+    <!-- Card feed grid START -->
+
+
+    {% if post.media_set.count == 1 %}
+    {% if '.video' in post.media_set.get.img.url or '.mp4' in post.media_set.get.img.url %}
+    <video class="player-html" preload="auto" controls>
+      <source src="{{post.media_set.get.img.url}}" type="video/mp4" style="border-style: solid">
+    </video>
+
+    {% else %}
+    <a class="card-img " href="{{post.media_set.get.img.url}}" data-glightbox data-gallery="image-popup{{post.id}}">
+      <img class="rounded img-fluid" src="{{post.media_set.get.img.url}}" alt="Image" style="border-style: solid">
+    </a>
+    {% endif %}
+    {% elif post.media_set.count == 2 %}
+    <div class="d-flex justify-content-between">
+      <div class="row g-3">
+        <!-- <img class="card-img" src="{{post.media_set.img.url}}" alt="Post"> -->
+        {% for file in post.media_set.all %}
+        <div class="col-6">
+          <a class="h-100" href="{{file.img.url}}" data-glightbox data-gallery="image-popup{{post.id}}">
+            {% if '.video' in file.img.url or '.mp4' in file.img.url %}
+            <video class="player-html" controls style="width:100%;height:100%">
+              <source src="{{file.img.url}}" type="video/mp4" style="border-style: solid">
+            </video>
+            {% else %}
+            <img class="rounded img-fluid" src="{{file.img.url}}" alt="Image"
+              style="border-style: solid;width:100%;height:100%">
+            {% endif %}
+          </a>
+        </div>
+
+        {% endfor %}
+
+      </div>
+    </div>
+    {% elif post.media_set.count >= 3 %}
+    <div class="d-flex justify-content-between">
+
+      <div class="row g-3">
+
+        <div class="col-6">
+          <!-- Grid img -->
+          {% for file in post.media_set.all %}
+          {% if forloop.counter == 1 %}
+          <a class="h-100" href="{{file.img.url}}" data-glightbox data-gallery="image-popup{{post.id}}">
+            {% if '.video' in file.img.url or '.mp4' in file.img.url %}
+            <video class="player-html" controls>
+              <source src="{{file.img.url}}" type="video/mp4" style="border-style: solid">
+            </video>
+            {% else %}
+            <img class="rounded img-fluid" src="{{file.img.url}}" alt="Image"
+              style="width:100%;height:100%;border-style: solid">
+            {% endif %}
+          </a>
+          {% endif %}
+          {% endfor %}
+        </div>
+        <div class="col-6">
+          <!-- Grid img -->
+
+          {% for file in post.media_set.all %}
+          {% if forloop.counter == 2 %}
+          <a class="h-100" href="{{file.img.url}}" data-glightbox data-gallery="image-popup{{post.id}}">
+            {% if '.video' in file.img.url or '.mp4' in file.img.url %}
+            <video class="player-html" controls>
+              <source src="{{file.img.url}}" type="video/mp4" style="border-style: solid">
+            </video>
+            {% else %}
+            <img class="rounded img-fluid" src="{{file.img.url}}" alt="Image" style="border-style: solid">
+            {% endif %}
+          </a>
+          {% endif %}
+          {% endfor %}
+          <!-- Grid img -->
+          <div class="position-relative bg-dark mt-3 rounded">
+            {% if post.media_set.all.count > 3  %}
+            <div class="hover-actions-item position-absolute top-50 start-50 translate-middle z-index-9">
+              <a class="btn btn-link text-white" href="#"> View all </a>
+            </div>
+            {% endif %}
+            {% for file in post.media_set.all %}
+            {% if forloop.counter == 3 %}
+            <a href="{{file.img.url}}" data-glightbox data-gallery="image-popup{{post.id}}">
+
+              {% if '.video' in file.img.url or '.mp4' in file.img.url %}
+              <video class="player-html" controls>
+                <source src="{{file.img.url}}" type="video/mp4" style="border-style: solid">
+              </video>a
+              {% else %}
+              <img class="img-fluid {% if post.media_set.all.count > 3 %}opacity-50{% endif %} rounded"
+                src="{{file.img.url}}" alt="Image" style="border-style: solid">
+              {% endif %}
+            </a>
+
+            {% elif forloop.counter > 3 %}
+            {% if '.video' in file.img.url or '.mp4' in file.img.url %}
+            <video class="player-html" controls>
+              <source src="{{file.img.url}}" type="video/mp4" style="border-style: solid">
+            </video>
+            {% else %}
+            <a href="{{file.img.url}}" data-glightbox data-gallery="image-popup{{post.id}}">
+            </a>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    {% endif %}
+    <!-- Card feed grid END -->
+
+    <!-- Feed react START -->
+
+    <!-- Comment wrap END -->
+  </div>
+
+</div>

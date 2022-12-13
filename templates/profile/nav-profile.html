@@ -1,0 +1,89 @@
+<div class="card">
+  <!-- Cover image -->
+  <div class="h-200px rounded-top"
+    style="background-image:url({{user.profile.cover_img.url}}); background-position: center; background-size: cover; background-repeat: no-repeat;">
+  </div>
+  <!-- Card body START -->
+  <div class="card-body py-0">
+    <div class="d-sm-flex align-items-start text-center text-sm-start">
+      <div>
+        <!-- Avatar -->
+        <div class="avatar avatar-xxl mt-n5 mb-3">
+          <img class="avatar-img rounded-circle border border-white border-3" src="{{user.profile.img.url}}" alt="">
+        </div>
+      </div>
+      <div class="ms-sm-4 mt-sm-3">
+        <!-- Info -->
+        <h1 class="mb-0 h5">{{user.first_name}} {{user.last_name}} <i
+            class="bi bi-patch-check-fill text-success small"></i></h1>
+        <p>@{{user.username}} </p>
+      </div>
+      <!-- Button -->
+
+       
+      <div class="d-flex mt-3 justify-content-center ms-sm-auto">
+      {% if user != request.user %}
+      <a href="{% url 'chat' user.id %}" class="btn btn-primary-soft me-2"> <i class='far fa-comment'></i>
+        Message</a>
+      {% endif %}
+    </div>
+      <div id="friend_request{{user.id}}" class="d-flex mt-3 justify-content-center">
+        {% if user == request.user %}
+        <a href="{% url 'about' user.username %}" class="btn btn-danger-soft me-2"> <i
+            class="bi bi-pencil-fill pe-1"></i> Edit profile</a>
+
+        {% elif user.id in friend_request %}
+        <a href="{% url 'accept_friend_request' user.id %}" class="btn btn-danger-soft me-2 friend_request"> <i
+            class="fa fa-plus pe-1"></i><i class="fa fa-user  pe-1"></i> Accept</a>
+
+        {% else %}
+
+        {% if user in request.user.profile.friends.all %}
+        <a class="btn btn-primary-soft me-2" id="profileAction2" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa fa-user-check"></i> Friend
+        </a>
+        <!-- Card share action dropdown menu -->
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileAction2">
+          <li><a class="dropdown-item friend_request" href="{% url 'remove_friend' user.id %}"> <i
+                class="fas fa-user-times"></i> Unfriend</a></li>
+        </ul>
+        {% elif user.id in recveiver  %}
+        <a href="{% url 'send_friend_request' user.id %}" class="btn btn-danger-soft me-2 friend_request"><i
+            class="fa fa-user-minus"></i> Cancel request</a>
+        {% else %}
+        <a href="{% url 'send_friend_request' user.id %}" class="btn btn-primary-soft me-2 friend_request"><i
+            class="fa fa-user-plus"></i> Add friend </a>
+        {% endif %}
+        {% endif %}
+      </div>
+    </div>
+    <!-- List profile -->
+    <ul class="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
+      {% if user.profile.education %}
+      <li class="list-inline-item"><i class="fa fa-graduation-cap"></i> {{user.profile.education}}</li>
+      {% endif %}
+      {% if user.profile.work %}
+      <li class="list-inline-item"><i class="bi bi-briefcase me-1"></i> {{user.profile.work}}</li>
+      {% endif %}
+      {% if user.profile.current_city %}
+      <li class="list-inline-item"><i class="bi bi-geo-alt me-1"></i> {{user.profile.current_city}}</li>
+      {% endif %}
+
+    </ul>
+  </div>
+  <!-- Card body END -->
+  <div class="card-footer mt-3 pt-2 pb-0">
+    <!-- Nav profile pages -->
+    <ul class="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
+      <li class="nav-item"> <a class="nav-link {% if 'posts' in request.path %}active{% endif %}"
+          href="{% url 'posts' user.username %}"> Posts </a> </li>
+      <li class="nav-item"> <a class="nav-link {% if 'about' in request.path %}active{% endif %}"
+          href="{% url 'about' user.username %}"> About </a> </li>
+      <li class="nav-item"> <a class="nav-link {% if 'friends' in request.path %}active{% endif %}"
+          href="{% url 'friends' user.username %}"> Friends </a> </li>
+      <li class="nav-item"> <a class="nav-link {% if 'media' in request.path %}active{% endif %}"
+          href="{% url 'media' user.username %}"> Media</a> </li>
+
+    </ul>
+  </div>
+</div>
